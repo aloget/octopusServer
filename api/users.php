@@ -3,9 +3,10 @@
 require_once("../config.php");
 
 $var = $_GET;
+$token = apache_request_headers()['x-token'];
 
 if ($var == null) {
-    $userList = User::getList();
+    $userList = User::getUsersBesidesToken($token);
     echo(json_encode($userList));
 } else {
     http_response_code(402);

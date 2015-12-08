@@ -108,6 +108,25 @@ class Message
      * @return Message|false Объект сообщения или false, если сообщение не найдено или произошла ошибка
      */
 
+    public static function getByUsersAndMessageId($sender_id, $recipient_id, $id)
+    {
+        $connection = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $query = "SELECT * FROM messages WHERE ((senderId = :senderId AND recipientId = :recipientId) OR (senderId = :recipientId AND recipientId = :senderId)) AND id > :id";
+        $execute = $connection->prepare($query);
+        $execute->bindValue(":senderId", $sender_id, PDO::PARAM_INT);
+        $execute->bindValue(":recipientId", $recipient_id, PDO::PARAM_INT);
+        $execute->bindValue(":id", $id, PDO::PARAM_INT);
+        $execute->execute();
+
+        $list = array();
+        while ($row = $execute->fetch()) {
+            $message = new Message ($row);
+            $list[] = $message;
+        }
+        $connection = null;
+        return $list;
+    }
+
     public static function getById($id)
     {
         $connection = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);

@@ -93,6 +93,19 @@ class User
         else return false;
     }
 
+    public static function getByToken($token)
+    {
+        $connection = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $query = "SELECT * FROM users WHERE token = :token";
+        $execute = $connection->prepare($query);
+        $execute->bindValue(":token", $token, PDO::PARAM_INT);
+        $execute->execute();
+        $row = $execute->fetch();
+        $connection = null;
+        if ($row) return new User ($row);
+        else return false;
+    }
+
     /**
      * Возвращаем объект пользователя соответствующий заданному UserName
      *
@@ -135,6 +148,22 @@ class User
         return $list;
     }
 
+    public static function getUsersBesidesToken($token)
+    {
+        $connection = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $query = "SELECT * FROM users WHERE token != :token";
+        $execute = $connection->prepare($query);
+        $execute->bindValue(":token", $token, PDO::PARAM_STR);
+        $execute->execute();
+
+        $list = array();
+        while ($row = $execute->fetch()) {
+            $user = new User ($row);
+            $list[] = $user;
+        }
+        $connection = null;
+        return $list;
+    }
 
     /**
      * Работа с БД
