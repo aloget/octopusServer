@@ -9,7 +9,7 @@ if ($userName != null && $password != null) {
     $user = User::getByUserName($userName);
     if ($user == 0) {
         http_response_code(402);
-        echo(json_encode(array('error' => "This \'Username\' not found.",)));
+        echo(json_encode(array('error' => "This username not found.",)));
     } else {
         $md5 = md5($password);
         if ($user->password == $md5)
