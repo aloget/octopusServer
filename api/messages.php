@@ -6,8 +6,8 @@ $token = apache_request_headers()['x-token'];
 
 if ($token != null) {
     $sender_id = User::getByToken($token)->id;
-    if ($_POST == null) {
-        if ($_GET == null) {
+    if ($_POST == null) {//get messages
+        if ($_GET == null) {//id not set
             http_response_code(402);
             echo(json_encode(array('error' => "I don't understand",)));
         } else {
@@ -22,7 +22,7 @@ if ($token != null) {
                 echo(json_encode(array('error' => "Error getting messages",)));
             }
         }
-    } else {
+    } else {//post messages
         $recipient_id = $_POST['recipient_id'];
         $last_message_id = $_POST['last_message_id'];
         $message_text = $_POST['message_text'];

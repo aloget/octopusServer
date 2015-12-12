@@ -7,7 +7,7 @@ $password = $_POST['password'];
 
 if ($userName != null && $password != null) {
     $user = User::getByUserName($userName);
-    if ($user == 0) {
+    if ($user == false) {
         http_response_code(402);
         echo(json_encode(array('error' => "This username not found.",)));
     } else {
@@ -21,5 +21,5 @@ if ($userName != null && $password != null) {
     }
 } else {
     http_response_code(402);
-    echo(json_encode(array('error' => "User is NULL.",)));
+    echo(json_encode(array('error' => "Username or password missing.",)));
 }
