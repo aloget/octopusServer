@@ -8,23 +8,18 @@ if ($token != null) {
     $sender_id = User::getByToken($token)->id;
     if ($_POST == null) {
         if ($_GET == null) {
-            $messages = Message::getList();
-            if ($messages != null)
-                echo(json_encode($messages));
-            else {
-                http_response_code(402);
-                echo(json_encode(array('error' => "Messages not found",)));
-            }
+            http_response_code(402);
+            echo(json_encode(array('error' => "I don't understand",)));
         } else {
             $recipient_id = $_GET['recipient_id'];
             $last_message_id = $_GET['last_message_id'];
 
             $messages = Message::getByUsersAndMessageId($sender_id, $recipient_id, $last_message_id);
-            if ($messages != null)
+            if ($messages != false)
                 echo(json_encode($messages));
             else {
-                http_response_code(402);
-                echo(json_encode(array('error' => "Messages not found",)));
+                http_response_code(500);
+                echo(json_encode(array('error' => "Error getting messages",)));
             }
         }
     } else {
@@ -36,14 +31,14 @@ if ($token != null) {
         $message->insert();
 
         $messages = Message::getByUsersAndMessageId($sender_id, $recipient_id, $last_message_id);
-        if ($messages != null)
+        if ($messages != false)
             echo(json_encode($messages));
         else {
-            http_response_code(402);
-            echo(json_encode(array('error' => "Messages not found",)));
+            http_response_code(500);
+            echo(json_encode(array('error' => "Error getting messages",)));
         }
     }
 } else {
-    http_response_code(402);
+    http_response_code(401);
     echo(json_encode(array('error' => "Token not set.",)));
 }
