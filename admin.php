@@ -157,6 +157,8 @@ function newUser()
 
     if (isset($_POST['saveChanges'])) {
         $user = new User($_POST);
+        $user->password = md5($user->password);
+        $user->token = md5(uniqid($user->username, true));
         $user->insert();
         header("Location: admin.php?status=changesSaved");
     } elseif (isset($_POST['cancel'])) {
@@ -183,6 +185,8 @@ function editUser()
         }
 
         $user->fillWithForm($_POST);
+        $user->password = md5($user->password);
+        $user->token = md5(uniqid($user->username, true));
         $user->update();
         header("Location: admin.php?status=changesSaved");
     } elseif (isset($_POST['cancel'])) {
