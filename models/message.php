@@ -1,47 +1,15 @@
 <?php
 
-//require_once("config.php");
 
-/**
- * Класс для обработки сообщений
- */
 class Message
 {
-    //Свойства
-
-    /**
-     * @var int ID сообщения из БД
-     */
+    
     public $id = null;
-
-    /**
-     * @var int ID пользователя-отправителя
-     */
     public $senderId = null;
-
-
-    /**
-     * @var int ID пользователя-получателя
-     */
     public $recipientId = null;
-
-
-    /**
-     * @var string текст сообщения
-     */
     public $message = null;
-
-
-    /**
-     * @var int дата отправки сообщения (timestamp)
-     */
     public $dispatchTimestamp = null;
 
-
-    /**
-     * Конструирует объект сообщения
-     * @param assoc Optional массив значений
-     */
 
 
     public function __construct($data = array())
@@ -78,16 +46,6 @@ class Message
     }
 
 
-    /**
-     * Возвращает объект сообщения с значениями, переданными с клиента
-     * Устанавливает текущую дату в качестве значения $this->dispatchTime
-     *
-     * @param int id пользователя-отправителя
-     * @param int id пользователя-получателя
-     * @param string текст сообщения
-     * @return Message объект сообщения с соответствующими значениями
-     */
-
     public static function withClientData($senderId, $recipientId, $message)
     {
         $instance = new self();
@@ -100,13 +58,7 @@ class Message
         return $instance;
     }
 
-
-    /**
-     * Возвращаем объект сообщения соответствующий заданному ID
-     *
-     * @param int ID сообщения
-     * @return Message|false Объект сообщения или false, если сообщение не найдено или произошла ошибка
-     */
+   
 
     public static function getByUsersAndMessageId($sender_id, $recipient_id, $id)
     {
@@ -131,6 +83,7 @@ class Message
         }
     }
 
+
     public static function getById($id)
     {
         $connection = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
@@ -144,12 +97,7 @@ class Message
         else return false;
     }
 
-    /**
-     * Возвращает все объекты сообщений БД
-     *
-     * @param string Optional Столбец по которому сортируются сообщения (по умолчанию date DESC)
-     * @return Array|false Массив сообщений или false, если произошла ошибка
-     */
+
 
     public static function getList($order = "date DESC")
     {
@@ -173,9 +121,6 @@ class Message
      * Работа с БД
      */
 
-    /**
-     * Вставляем текущий объект сообщения в БД
-     */
 
     public function insert()
     {
@@ -198,9 +143,6 @@ class Message
         $connection = null;
     }
 
-    /**
-     * Обновляем текущий объект сообщения в БД
-     */
 
     public function update()
     {
@@ -224,10 +166,6 @@ class Message
         $connection = null;
     }
 
-
-    /**
-     * Удаляем текущий объект сообщения из БД
-     */
 
     public function delete()
     {

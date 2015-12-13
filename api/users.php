@@ -11,7 +11,7 @@ if ($token != null) {
         echo(json_encode($userList));
     } else {
         http_response_code(402);
-        echo(json_encode(array('error' => "I do not understand you.",)));
+        echo(json_encode(array('error' => "I don't understand you.",)));
     }
 } else {
     http_response_code(401);
