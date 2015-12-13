@@ -127,7 +127,7 @@ class Message
             $connection = null;
             return $list;
         } catch (Exception $exc) {
-            return false;
+            return -1;
         }
     }
 

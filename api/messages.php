@@ -15,7 +15,7 @@ if ($token != null) {
             $last_message_id = $_GET['last_message_id'];
 
             $messages = Message::getByUsersAndMessageId($sender_id, $recipient_id, $last_message_id);
-            if ($messages != false)
+            if ($message != -1)
                 echo(json_encode($messages));
             else {
                 http_response_code(500);
@@ -31,7 +31,7 @@ if ($token != null) {
         $message->insert();
 
         $messages = Message::getByUsersAndMessageId($sender_id, $recipient_id, $last_message_id);
-        if ($messages != false)
+        if ($message != -1)
             echo(json_encode($messages));
         else {
             http_response_code(500);
